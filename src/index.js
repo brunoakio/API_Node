@@ -1,16 +1,9 @@
 const express = require("express");
-
+const { v4: uuidv4 } = require("uuid");
 const app = express();
+const routes = require('./router');
 
 app.use(express.json());
+app.use(routes);
 
-app.post("/leads/:id" , (request, response) => {
-    const body = request.body;
-    return response.json([]);
-})
-app.get("/leads/:id" , (request, response) => {
-    const { id } = request.params;
-    return response.json([]);
-});
-//Porta da aplicação
 app.listen(3333);
