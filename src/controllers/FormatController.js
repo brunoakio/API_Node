@@ -1,6 +1,6 @@
 const { response } = require("express");
 const Format = require("../models/format");
-const { user, PRIVATE_KEY, tokenValited } = require("../security/auth");
+import { user, PRIVATE_KEY, tokenValited } from "../security/auth";
 const jsonwebtoken = require("jsonwebtoken");
 module.exports = {
   async format(req, res) {
@@ -32,7 +32,7 @@ module.exports = {
       if (!correctPassword)
         return response.status(401).send("Password or E-mail incorrect!");
 
-      const token = jsonwebtoken.sign(
+      const token = await jsonwebtoken.sign(
         { user: JSON.stringify(user) },
         PRIVATE_KEY,
         { expireIn: "60m" }
