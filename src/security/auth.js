@@ -1,4 +1,4 @@
-const jsonwebtoken = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 export const PRIVATE_KEY = '1010FFF'
 export const user = {
@@ -6,7 +6,7 @@ export const user = {
     email: 'format@vitru.com'
 }
 
-export function tokenValited(
+export default function tokenValited(
     request,
     response,
     next
@@ -16,7 +16,7 @@ export function tokenValited(
     if(!token) return response.status(401).send('Acess denied. No token provided.');
 
     try {
-        const payload = jsonwebtoken.verify(token, PRIVATE_KEY);
+        const payload = jwt.verify(token, PRIVATE_KEY);
         const userIdFromToken = typeof payload !== 'string' && payload.user;
 
         if(!user && !userIdFromToken) {

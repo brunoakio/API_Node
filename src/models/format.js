@@ -1,4 +1,4 @@
-function Format(numero, tipo) {
+export default function Format(numero, tipo) {
     
     if (tipo === 'email' && numero.match(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i)){
         return numero;
@@ -19,4 +19,3 @@ function Format(numero, tipo) {
         }
     }
 }
-module.exports = Format;
