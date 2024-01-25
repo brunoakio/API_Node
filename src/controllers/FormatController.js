@@ -17,8 +17,8 @@ export default {
 
       const token = await jwt.sign(
         { user: JSON.stringify(user) },
-        PRIVATE_KEY
-        
+        PRIVATE_KEY,
+        { expiresIn: '60m' }
       );
 
       return res.status(200).json({ data: { user, token } });
