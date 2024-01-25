@@ -6,13 +6,13 @@ export const user = {
     email: 'format@vitru.com'
 }
 
-export default function tokenValited(
+export function tokenValited(
     request,
     response,
     next
 ) {
     const [, token] = request.headers.authorization?.split(' ') || [' ', ' '];
-
+    console.log(token);
     if(!token) return response.status(401).send('Acess denied. No token provided.');
 
     try {

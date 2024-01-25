@@ -1,8 +1,8 @@
 import Format from "../models/format.js";
-import tokenValited, { user, PRIVATE_KEY } from "../security/auth.js";
+import { user, PRIVATE_KEY, tokenValited } from "../security/auth.js";
 import jwt from "jsonwebtoken";
 import express from "express";
-const app = express();
+
 export default {
   async  auth(req, res) {
     const [, hash] = req.headers.authorization?.split(" ") || [" ", " "];
@@ -28,15 +28,14 @@ export default {
     }
   },
 
-  format(req, res) {
-    const app = express();
-    app.use('*', tokenValited);
+  async format(req, res) {
     
     try {
+      const { user } = await req.headers
+      const currentUser = await JSON.parse(user);
       const { numero, tipo } = req.body;
-      const { user } = req.headers
       const numeroFormatado = Format(numero, tipo);
-
+      
       if (numeroFormatado) {
         res.json({ numeroFormatado });
       } else {
