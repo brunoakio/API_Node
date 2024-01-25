@@ -40,11 +40,11 @@ export default {
  format(req, res) {
     try {
       const { user } = req.headers
-      const { numero, tipo } = req.body;
-      const numeroFormatado = Format(numero, tipo);
+      const { value, type } = req.body;
+      const formattedValue = Format(value, type);
       
-      if (numeroFormatado) {
-        res.json({ numeroFormatado });
+      if (formattedValue) {
+        res.json({ formattedValue });
       } else {
         res
           .status(400)

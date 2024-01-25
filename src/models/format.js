@@ -5,15 +5,15 @@ const CEP_REGEX = /^(\d{5})(\d{3})$/;
 const RG_REGEX = /^(\d{2})(\d{3})(\d{3})(\d{1,2})$/;
 const DATE_REGEX = /^(\d{2})(\d{2})(\d{4})$/;
 
-export default function Format(numero, tipo) {
+export default function Format(value, type) {
     try {
-        if (tipo === 'email' && numero.match(EMAIL_REGEX)) {
-            return numero;
+        if (type === 'email' && value.match(EMAIL_REGEX)) {
+            return value;
         }
 
-        const nstring = numero.replace(/[^A-Za-z\d]+/g, "");
+        const nstring = value.replace(/[^A-Za-z\d]+/g, "");
 
-        switch (tipo) {
+        switch (type) {
             case 'cpf':
                 return formatWithRegex(nstring, CPF_REGEX, '$1.$2.$3-$4');
             case 'telefone':
