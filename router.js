@@ -1,12 +1,16 @@
 import express from 'express';
 import FormatController from './src/controllers/FormatController.js';
-import { user, PRIVATE_KEY} from './src/security/auth.js';
+import { user, PRIVATE_KEY, tokenValited} from './src/security/auth.js';
 
 const routes = express.Router();
 
 
+routes.get('/token', FormatController.auth);
+
+routes.use('*', tokenValited);
 routes.post('/formatar_numero', FormatController.format);
 
-routes.get('/token', FormatController.auth);
+
+
 
 export default routes;
