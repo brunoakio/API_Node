@@ -1,25 +1,34 @@
 import Format from "../models/format.js";
-import { user, PRIVATE_KEY, tokenValited } from "../security/auth.js";
+import { user, PRIVATE_KEY } from "../security/auth.js";
 import jwt from "jsonwebtoken";
-import express from "express";
+
+const AUTHORIZED_USER = "format@vitru.com";
+const AUTHORIZED_PASSWORD = "Vitru#2024";
 
 export default {
   async  auth(req, res) {
-    const [, hash] = req.headers.authorization?.split(" ") || [" ", " "];
+    try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+      return res.status(401).send("Authorization header is missing!");
+    }
+
+    const [, hash] = authHeader.split(" ");
     const [email, password] = Buffer.from(hash, "base64").toString().split(":");
     console.log(email, password);
-    try {
-      const correctPassword =
-        email === "format@vitru.com" && password === "Vitru#2024";
+    
+    const correctPassword = email === AUTHORIZED_USER && password === AUTHORIZED_PASSWORD;
 
-      if (!correctPassword)
-        return res.status(401).send("Password or E-mail incorrect!");
+    if (!correctPassword){
+      return res.status(401).send("E-mail or password is incorrect!");
+    }
 
-      const token = await jwt.sign(
-        { user: JSON.stringify(user) },
-        PRIVATE_KEY,
-        { expiresIn: '60m' }
-      );
+    const token = await jwt.sign(
+      { user: JSON.stringify(user) },
+      PRIVATE_KEY,
+      { expiresIn: '60m' }
+    );
 
       return res.status(200).json({ data: { user, token } });
     } catch (error) {
@@ -28,11 +37,9 @@ export default {
     }
   },
 
-  async format(req, res) {
-    
+ format(req, res) {
     try {
-      const { user } = await req.headers
-      const currentUser = await JSON.parse(user);
+      const { user } = req.headers
       const { numero, tipo } = req.body;
       const numeroFormatado = Format(numero, tipo);
       
@@ -41,11 +48,11 @@ export default {
       } else {
         res
           .status(400)
-          .json({ erro: "Formato inválido ou tipo não suportado." });
+          .json({ error: "Invalid format or unsupported type." });
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ erro: "Erro interno do servidor." });
+      res.status(500).json({ error: "Internal server error." });
     }
   }
 }
