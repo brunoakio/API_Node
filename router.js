@@ -1,6 +1,6 @@
 import express from 'express';
 import FormatController from './src/controllers/FormatController.js';
-import { user, PRIVATE_KEY, tokenValited} from './src/security/auth.js';
+import tokenValited from './src/security/auth.js';
 
 const routes = express.Router();
 

@@ -1,9 +1,8 @@
 import Format from "../models/format.js";
-import { user, PRIVATE_KEY } from "../security/auth.js";
+import user from '../security/auth.js'
 import jwt from "jsonwebtoken";
+import 'dotenv/config'
 
-const AUTHORIZED_USER = "format@vitru.com";
-const AUTHORIZED_PASSWORD = "Vitru#2024";
 
 export default {
   async  auth(req, res) {
@@ -17,8 +16,8 @@ export default {
     const [, hash] = authHeader.split(" ");
     const [email, password] = Buffer.from(hash, "base64").toString().split(":");
     console.log(email, password);
-    
-    const correctPassword = email === AUTHORIZED_USER && password === AUTHORIZED_PASSWORD;
+    console.log(process.env.AUTHORIZED_USER, process.env.AUTHORIZED_PASSWORD)
+    const correctPassword = email === process.env.AUTHORIZED_USER && password === process.env.AUTHORIZED_PASSWORD;
 
     if (!correctPassword){
       return res.status(401).send("E-mail or password is incorrect!");
@@ -26,7 +25,7 @@ export default {
 
     const token = await jwt.sign(
       { user: JSON.stringify(user) },
-      PRIVATE_KEY,
+      process.env.PRIVATE_KEY,
       { expiresIn: '60m' }
     );
 

@@ -1,12 +1,12 @@
 import jwt from 'jsonwebtoken';
+import 'dotenv/config'
 
-export const PRIVATE_KEY = '1010FFF'
 export const user = {
     name: 'Format',
     email: 'format@vitru.com'
 }
 
-export function tokenValited(
+export default function tokenValited(
     request,
     response,
     next
@@ -22,7 +22,7 @@ export function tokenValited(
         if(!user && !userIdFromToken) {
             return response.send(401).json({ message: 'Invalid token' });
         }
-        request.headers['user'] = payload.user;
+        request.headers['process.env.user'] = payload.user;
 
         return next();
     } catch(error) {
